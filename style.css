@@ -1,0 +1,171 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body, html {
+    width: 100%;
+    height: 100%;
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+    background-color: #fff0f3;
+}
+
+/* Pantalla de Inicio */
+#pantalla-inicio {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff0f3;
+    z-index: 1000; /* Siempre arriba al inicio */
+    transition: opacity 0.5s ease;
+}
+
+h1 { color: #c2185b; margin-bottom: 20px; font-size: 2rem; text-align: center; }
+
+#boton-okno {
+    padding: 15px 40px;
+    font-size: 1.5rem;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 8px 15px rgba(255, 77, 77, 0.4);
+}
+
+/* El Jardín Secreto */
+#jardin {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background-image: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), url('images/tulipanes.png');
+    background-size: cover;
+    background-position: center;
+    display: none; /* Se activa con JS */
+}
+
+/* Tulipanes */
+.tulipan {
+    position: absolute;
+    bottom: -160px; /* Empiezan abajo y suben con la animación */
+    z-index: 50;
+    animation: aparecer 2.2s forwards;
+    will-change: transform;
+}
+
+.tulipan .tallo {
+    width: 6px;
+    height: 120px;
+    margin: 0 auto;
+    background: linear-gradient(180deg, #6fcf97, #2e7d32);
+    border-radius: 4px;
+    box-shadow: inset -1px -2px 4px rgba(0,0,0,0.08);
+}
+
+/* Flor: dos pétalos principales y uno central con degradado */
+.flor {
+    width: 48px;
+    height: 56px;
+    position: relative;
+    margin: 0 auto 6px;
+}
+.flor .petalo {
+    position: absolute;
+    width: 60%;
+    height: 80%;
+    top: 0;
+    border-radius: 50% 50% 30% 30%;
+    transform-origin: bottom center;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.07);
+}
+.flor .petalo-left { left: 2px; transform: rotate(-18deg); }
+.flor .petalo-right { right: 2px; transform: rotate(18deg); }
+.flor .petalo-center {
+    left: 50%; transform: translateX(-50%); width: 46%; height: 75%; z-index: 2;
+    border-radius: 50% 50% 40% 40%;
+}
+
+.rosa1 .petalo-left, .rosa1 .petalo-right, .rosa1 .petalo-center { background: linear-gradient(180deg,#ff8db3,#ff5f91); }
+.rosa2 .petalo-left, .rosa2 .petalo-right, .rosa2 .petalo-center { background: linear-gradient(180deg,#ff6fa0,#ff2e6f); }
+.rosa3 .petalo-left, .rosa3 .petalo-right, .rosa3 .petalo-center { background: linear-gradient(180deg,#ff4b8a,#d81b60); }
+
+/* Hoja lateral */
+.hoja {
+    width: 24px; height: 48px; position: absolute; left: 50%; transform: translateX(-12px); bottom: 30px; z-index: 40;
+}
+.hoja::before {
+    content: "";
+    position: absolute; left: 0; top: 8px;
+    width: 100%; height: 80%;
+    background: linear-gradient(180deg,#6fcf97,#2e7d32);
+    border-radius: 60% 40% 40% 60% / 60% 40% 60% 40%;
+    transform: rotate(-35deg);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* Sway: usar una animación con variable para variar intensidad */
+.tulipan { animation-name: aparecer; }
+.tulipan[data-sway="true"] { animation: aparecer 2.2s forwards, sway calc(3s + var(--sway, 0s)) ease-in-out infinite; }
+
+/* Corazones */
+.corazon {
+    position: absolute;
+    width: 15px; height: 15px;
+    background-color: #ffb7c5;
+    transform: rotate(45deg);
+    z-index: 10;
+    animation: lluvia linear infinite;
+}
+.corazon::before, .corazon::after {
+    content: ""; position: absolute; width: 15px; height: 15px;
+    background-color: inherit; border-radius: 50%;
+}
+.corazon::before { top: -8px; left: 0; }
+.corazon::after { left: -8px; top: 0; }
+
+/* Mensaje */
+.tarjeta-mensaje {
+    position: absolute;
+    top: 40%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 25px;
+    text-align: center;
+    width: 85%;
+    max-width: 400px;
+    z-index: 100;
+    color: #ad1457;
+    border: 2px solid #ff80ab;
+}
+
+/* Cuadro de video (debajo del mensaje) */
+.cuadro-video {
+    position: absolute;
+    top: 62%; left: 50%;
+    transform: translate(-50%, -0%);
+    background: rgba(255,255,255,0.95);
+    padding: 18px;
+    border-radius: 18px;
+    width: 85%;
+    max-width: 480px;
+    text-align: center;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    border: 1px solid rgba(255,128,171,0.22);
+    z-index: 95;
+}
+.cuadro-video h3 { margin-bottom: 10px; color: #c2185b; }
+.cuadro-video video { width: 100%; height: auto; border-radius: 12px; display: block; }
+.cuadro-video .video-actions { margin-top: 8px; }
+.cuadro-video .video-actions a { color: #ad1457; text-decoration: none; font-weight: 600; }
+.cuadro-video .video-actions a:hover { text-decoration: underline; }
+
+@keyframes aparecer { to { bottom: var(--pos-y); } }
+@keyframes sway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+@keyframes lluvia { 
+    0% { transform: translateY(-10vh) rotate(45deg); } 
+    100% { transform: translateY(110vh) rotate(405deg); } 
+}
